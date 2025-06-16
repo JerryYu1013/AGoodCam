@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="imgs/icon.webp">
+    <title>AGoodCam 信令伺服器狀態</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-box {
+            background-color: #f1f3f4;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1a73e8;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+        
+        .server-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .server-info h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background-color: #f1f3f4;
+            font-weight: bold;
+            color: #202124;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-online {
+            background-color: #34a853;
+        }
+        
+        .status-warning {
+            background-color: #fbbc04;
+        }
+        
+        .status-error {
+            background-color: #ea4335;
+        }
+        
+        .last-updated {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 600px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AGoodCam 信令伺服器狀態</h1>
+        
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-label">當前在線用戶</div>
+                <div class="stat-value" id="current-users">0</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-label">等待配對用戶</div>
+                <div class="stat-value" id="waiting-users">0</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-label">總連接數</div>
+                <div class="stat-value" id="total-connections">0</div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="stat-label">最高同時在線</div>
+                <div class="stat-value" id="peak-users">0</div>
+            </div>
+        </div>
+        
+        <div class="server-info">
+            <h2>伺服器狀態</h2>
+            <table>
+                <tr>
+                    <th>項目</th>
+                    <th>狀態</th>
+                </tr>
+                <tr>
+                    <td>信令伺服器</td>
+                    <td><span class="status-indicator status-online"></span> 運行中</td>
+                </tr>
+                <tr>
+                    <td>配對服務</td>
+                    <td><span class="status-indicator status-online"></span> 運行中</td>
+                </tr>
+                <tr>
+                    <td>資源使用率</td>
+                    <td><span class="status-indicator status-online"></span> 正常</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="last-updated">
+            最後更新時間: <span id="last-updated">-</span>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // 連接到伺服器
+        const socket = io();
+        
+        // 獲取DOM元素
+        const currentUsersElement = document.getElementById('current-users');
+        const waitingUsersElement = document.getElementById('waiting-users');
+        const totalConnectionsElement = document.getElementById('total-connections');
+        const peakUsersElement = document.getElementById('peak-users');
+        const lastUpdatedElement = document.getElementById('last-updated');
+        
+        // 更新時間
+        function updateTime() {
+            const now = new Date();
+            lastUpdatedElement.textContent = now.toLocaleString();
+        }
+        
+        // 初始更新時間
+        updateTime();
+        
+        // 接收統計數據
+        socket.on('stats', (data) => {
+            currentUsersElement.textContent = data.currentUsers || 0;
+            waitingUsersElement.textContent = data.waitingUsers || 0;
+            totalConnectionsElement.textContent = data.totalConnections || 0;
+            peakUsersElement.textContent = data.peakConcurrentUsers || 0;
+            
+            // 更新時間
+            updateTime();
+        });
+        
+        // 每分鐘更新一次時間
+        setInterval(updateTime, 60000);
+    </script>
+</body>
+</html> 
