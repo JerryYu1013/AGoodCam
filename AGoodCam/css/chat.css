@@ -1,0 +1,1028 @@
+/* 聊天頁面特定樣式 */
+
+/* 主容器 */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f8f9fa; /* 淺灰色背景 */
+    color: #333; /* 深灰色文字 */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* 統一字體 */
+}
+
+/* 聊天頭部 */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white; /* 白色背景 */
+    border-bottom: 1px solid #e9ecef; /* 淺灰色邊框 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* 淺陰影 */
+    z-index: 100;
+}
+
+.chat-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, #1a73e8, #4a90e2); /* 調整漸變色以匹配主色 */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Logo 區域 */
+.logo-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.online-status {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #6c757d; /* style.css 中的次要文字顏色 */
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #28a745; /* 綠色 */
+    margin-right: 6px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* 底部控制欄樣式 */
+.bottom-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 50;
+    pointer-events: none;
+}
+
+.controls-wrapper {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
+}
+
+.azar-video-container:not(:hover) .controls-wrapper {
+    opacity: 0.6;
+}
+
+/* 控制按鈕樣式 */
+.control-btn {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background-color: #2d3748;
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.control-btn:hover {
+    background-color: #4a5568;
+    transform: scale(1.05);
+}
+
+/* 主要操作按鈕 (結束、跳過) */
+.control-btn.main-btn, 
+#skip-btn {
+    width: 55px;
+    height: 55px;
+    font-size: 1.3rem;
+}
+
+/* 結束按鈕特定樣式 */
+#end-btn {
+    background-color: #e53e3e;
+}
+#end-btn:hover {
+    background-color: #c53030;
+}
+
+/* 跳過按鈕特定樣式 */
+#skip-btn {
+    background-color: #dd6b20;
+}
+#skip-btn:hover {
+    background-color: #c05621;
+}
+
+#flip-camera-btn, #toggle-video-btn, #toggle-audio-btn {
+    background-color: rgba(52, 73, 94, 0.7);
+}
+
+#flip-camera-btn:hover, #toggle-video-btn:hover, #toggle-audio-btn:hover {
+    background-color: #34495e;
+}
+
+/* 聊天主體 */
+.chat-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    background-color: #f8f9fa; /* 淺灰色背景 */
+    position: relative;
+}
+
+/* 視訊容器 */
+.azar-video-container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 57px); /* 根據 header 高度調整 */
+    background-color: #000;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+/* 主視訊區（對方） */
+.main-video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.main-video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #000;
+}
+
+.peer-info {
+    position: absolute;
+    bottom: 90px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+/* 小視訊區（自己） */
+.self-video-wrapper {
+    position: absolute;
+    width: 22%;
+    max-width: 300px;
+    min-width: 120px;
+    top: 20px;
+    right: 20px;
+    border-radius: 10px; /* 統一樣式 */
+    overflow: visible;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* 調整陰影 */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 調整邊框 */
+    z-index: 20;
+    transition: box-shadow 0.3s ease, transform 0.1s ease;
+    touch-action: none;
+    background-color: #000;
+    cursor: grab;
+}
+
+.self-video-wrapper.dragging {
+    cursor: grabbing;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.self-video-wrapper video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    transform: scaleX(-1);
+    background-color: #000;
+    border-radius: 9px; /* 輕微調整以匹配容器 */
+    overflow: hidden;
+}
+
+/* 調整大小控制點 (電腦版) */
+.resize-handle {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(26, 115, 232, 0.7); /* 藍色控制點 */
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: nwse-resize;
+    z-index: 21;
+    display: none;
+}
+
+/* 在非觸控設備上顯示控制點 */
+@media (pointer: fine) {
+    .self-video-wrapper:hover .resize-handle {
+        display: block;
+    }
+}
+
+.self-info {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+.video-label {
+    padding: 3px 7px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* 等待訊息樣式 */
+#waiting-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 280px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: white;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.waiting-animation {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 聊天視窗設計 */
+.text-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    max-height: 50vh;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: -3px -3px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out;
+    z-index: 1000;
+    border-top: 1px solid #e9ecef;
+    border-left: 1px solid #e9ecef;
+    transform-origin: bottom right;
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+}
+
+.text-chat.expanded {
+    transform: scale(1);
+    opacity: 1;
+    bottom: 20px;
+    right: 20px;
+    pointer-events: auto;
+}
+
+.chat-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f8f9fa; /* 淺灰色背景 */
+    border-bottom: 1px solid #e9ecef; /* 淺灰色邊框 */
+    cursor: pointer;
+}
+
+.chat-header-bar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600; /* 加粗 */
+    color: #333; /* 深灰色文字 */
+}
+
+.chat-toggle-btn {
+    background: none;
+    border: none;
+    color: #6c757d; /* 次要文字顏色 */
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.chat-toggle-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* 輕微懸停效果 */
+}
+
+.messages-area {
+    flex: 1; /* 自動填滿剩餘空間 */
+    padding: 15px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    background-color: white; /* 確保背景為白色 */
+    /* 新增：允許滾動條顯示 */
+    overflow-y: auto;
+    /* 新增：主要高度計算，確保訊息區域有足夠空間 */
+    height: calc(100% - 110px);
+}
+
+.message {
+    margin-bottom: 12px; /* 增加間距 */
+    padding: 8px 12px;
+    border-radius: 18px;
+    max-width: 85%; /* 調整最大寬度 */
+    word-wrap: break-word;
+    animation: fadeIn 0.3s;
+    position: relative;
+    line-height: 1.4;
+    clear: both; /* 防止浮動問題 */
+}
+
+.message::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.my-message {
+    background-color: #1a73e8; /* 藍色背景 */
+    color: white;
+    margin-left: auto;
+    float: right; /* 右浮動 */
+    border-bottom-right-radius: 5px;
+}
+
+.my-message::after {
+    right: -8px;
+    border-left-color: #1a73e8;
+    border-right: 0;
+    border-bottom: 0;
+    margin-top: -10px; /* 調整尖角位置 */
+}
+
+.other-message {
+    background-color: #e9ecef; /* 淺灰色背景 */
+    color: #333; /* 深灰色文字 */
+    margin-right: auto;
+    float: left; /* 左浮動 */
+    border-bottom-left-radius: 5px;
+}
+
+.other-message::after {
+    left: -8px;
+    border-right-color: #e9ecef;
+    border-left: 0;
+    border-bottom: 0;
+    margin-top: -10px; /* 調整尖角位置 */
+}
+
+.system-message {
+    background-color: #fff3cd; /* 淡黃色背景 */
+    color: #856404; /* 深黃色文字 */
+    text-align: center;
+    font-style: italic;
+    padding: 8px 12px;
+    margin: 10px auto;
+    border-radius: 8px;
+    max-width: 90%;
+    clear: both;
+    border: 1px solid #ffeeba;
+}
+
+.timestamp {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    margin-top: 3px;
+    display: block; /* 確保獨占一行 */
+    clear: both; /* 清除浮動 */
+    text-align: inherit; /* 繼承父元素的對齊 */
+    padding-top: 2px;
+}
+
+.my-message .timestamp {
+    text-align: right;
+}
+
+.other-message .timestamp {
+    text-align: left;
+}
+
+.input-area {
+    display: flex;
+    padding: 10px 12px;
+    border-top: 1px solid #e9ecef;
+    position: relative;
+    width: 100%;
+    background-color: #f8f9fa;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ced4da; /* 邊框顏色 */
+    background-color: white; /* 白色背景 */
+    color: #333; /* 深灰色文字 */
+    border-radius: 20px; /* 調整圓角 */
+    margin-right: 8px;
+    font-size: 0.95rem;
+}
+
+.input-area input::placeholder {
+    color: #adb5bd;
+}
+
+.input-area input:focus {
+    outline: none;
+    border-color: #80bdff; /* 藍色 focus 邊框 */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* 藍色 focus 陰影 */
+    background-color: white;
+}
+
+.input-area button {
+    width: 40px;
+    height: 40px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-left: 8px;
+    padding: 0;
+}
+
+.input-area button:hover {
+    background-color: #135cbe; /* 深藍色懸停 */
+    transform: scale(1.05); /* 恢復原始懸停效果 */
+}
+
+.input-area button:disabled, .input-area input:disabled {
+    background-color: #ccc; /* 保持禁用樣式 */
+    cursor: not-allowed;
+    transform: none; /* 禁用時無縮放 */
+}
+
+/* 聊天泡泡按鈕 */
+.chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 55px;
+    height: 55px;
+    background-color: #1a73e8; /* 主藍色 */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.chat-bubble:hover {
+    background-color: #135cbe;
+    transform: scale(1.05);
+}
+
+.chat-bubble.hidden {
+    display: none;
+}
+
+.chat-notification {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 18px;
+    height: 18px;
+    background-color: #dc3545; /* 紅色通知 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: bold;
+    border: 2px solid white; /* 白色邊框 */
+}
+
+/* 連接資訊 */
+.connection-info {
+    text-align: center;
+    padding: 10px;
+    background-color: #131a29;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shortcut-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shortcut-info i {
+    margin-right: 5px;
+    color: #1a73e8;
+}
+
+/* 聊天訊息配對中的動畫效果 */
+.pairing-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 90;
+    display: none; /* 初始隱藏 */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+.pairing-animation .searching-text {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    color: white;
+    text-align: center;
+}
+
+.pairing-animation .pulse-circles {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.pairing-animation .pulse-circle {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(26, 115, 232, 0.6);
+    animation: pulse-anim 3s infinite;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.pairing-animation .pulse-circle:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.pairing-animation .pulse-circle:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes pulse-anim {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    70% {
+        opacity: 0.2;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* 工具提示樣式 */
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    animation: tooltip-fade 0.3s ease forwards;
+}
+
+@keyframes tooltip-fade {
+    to { opacity: 1; }
+}
+
+/* 響應式設計 */
+@media (min-width: 1200px) {
+    .azar-video-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 15px;
+    }
+    
+    .text-chat.expanded {
+        width: 400px;
+    }
+}
+
+@media (max-width: 900px) {
+    .text-chat {
+        width: 300px;
+    }
+    
+    .controls-wrapper {
+        gap: 10px;
+        padding: 10px 15px;
+    }
+    
+    .control-btn {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .control-btn.main-btn, 
+    #skip-btn {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+@media (max-width: 600px) {
+    .azar-video-container {
+        height: calc(100vh - 57px);
+    }
+    
+    .self-video-wrapper {
+        width: 35%;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .chat-header {
+        padding: 8px 15px;
+    }
+    
+    .bottom-controls {
+        bottom: 15px;
+    }
+    
+    .controls-wrapper {
+        gap: 8px;
+        padding: 8px 12px;
+    }
+    
+    .control-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    
+    .control-btn.main-btn, 
+    #skip-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 1.2rem;
+    }
+    
+    .text-chat {
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+        border-left: none;
+        bottom: 0;
+        right: 0;
+        min-height: 250px;
+        max-height: 60vh;
+    }
+    
+    .text-chat.expanded {
+        bottom: 0;
+        right: 0;
+    }
+    
+    /* 修正：確保聊天視窗內的元素對齊 */
+    .messages-area {
+        height: calc(100% - 100px);
+    }
+    
+    /* 修正：移動端聊天泡泡位置 */
+    .chat-bubble {
+        bottom: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+    
+    .chat-notification {
+        width: 16px;
+        height: 16px;
+        font-size: 0.6rem;
+    }
+    
+    .peer-info {
+        bottom: 75px;
+        left: 10px;
+    }
+}
+
+/* 深色模式樣式 */
+@media (prefers-color-scheme: dark) {
+    .chat-container {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    .chat-header {
+        background-color: #1e1e1e;
+        /* border-bottom-color: #333; */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .chat-header h1 {
+        background: linear-gradient(90deg, #64b5f6, #90caf9);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .online-status {
+        color: #bdbdbd;
+    }
+    
+    .status-dot {
+        background-color: #4caf50;
+        box-shadow: 0 0 3px #4caf50;
+    }
+
+    .chat-main {
+        background-color: #121212;
+    }
+
+    .azar-video-container {
+        background-color: #000;
+    }
+
+    .bottom-controls .controls-wrapper {
+        background-color: rgba(30, 30, 30, 0.7);
+        backdrop-filter: blur(10px);
+    }
+
+    .control-btn {
+        background-color: #333;
+        color: #e0e0e0;
+    }
+
+    .control-btn:hover {
+        background-color: #444;
+    }
+
+    #end-btn {
+        background-color: #b71c1c;
+    }
+    #end-btn:hover {
+        background-color: #d32f2f;
+    }
+    #skip-btn {
+        background-color: #e65100;
+    }
+    #skip-btn:hover {
+        background-color: #f57c00;
+    }
+    #flip-camera-btn, #toggle-video-btn, #toggle-audio-btn {
+        background-color: rgba(66, 66, 66, 0.8);
+    }
+    #flip-camera-btn:hover, #toggle-video-btn:hover, #toggle-audio-btn:hover {
+        background-color: #555;
+    }
+
+    .video-label {
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+    }
+
+    #waiting-message {
+        background-color: rgba(30, 30, 30, 0.85);
+        color: #fff;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .waiting-animation {
+        border-top-color: #eee;
+        border-color: rgba(255, 255, 255, 0.3);
+        border-top-color: #eee;
+    }
+
+    .text-chat {
+        background-color: #1e1e1e;
+        box-shadow: -3px -3px 15px rgba(0, 0, 0, 0.3);
+        border-top-color: #333;
+        border-left-color: #333;
+    }
+
+    .chat-header-bar {
+        background-color: #2a2a2a;
+        border-bottom-color: #333;
+    }
+
+    .chat-header-bar h3 {
+        color: #e0e0e0;
+    }
+
+    .chat-toggle-btn {
+        color: #bdbdbd;
+    }
+
+    .chat-toggle-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .messages-area {
+        background-color: #1e1e1e;
+    }
+
+    .my-message {
+        background-color: #0d47a1;
+        color: #f5f5f5;
+    }
+    .my-message::after {
+        border-left-color: #0d47a1;
+    }
+
+    .other-message {
+        background-color: #333;
+        color: #e0e0e0;
+    }
+    .other-message::after {
+        border-right-color: #333;
+    }
+
+    .system-message {
+        background-color: #2a2a2a;
+        color: #fffacd;
+        border-color: #444;
+    }
+
+    .timestamp {
+        color: #aaa;
+    }
+
+    .input-area {
+        background-color: #2a2a2a;
+        border-top-color: #333;
+    }
+
+    .input-area input {
+        background-color: #333;
+        border-color: #555;
+        color: #e0e0e0;
+    }
+
+    .input-area input::placeholder {
+        color: #888;
+    }
+
+    .input-area input:focus {
+        border-color: #64b5f6;
+        background-color: #3a3a3a;
+        box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.3);
+    }
+
+    .input-area button {
+        background-color: #0d47a1;
+    }
+    .input-area button:hover {
+        background-color: #1565c0;
+    }
+    .input-area button:disabled,
+    .input-area input:disabled {
+        background-color: #555;
+        color: #999;
+        cursor: not-allowed;
+    }
+
+    .chat-bubble {
+        background-color: #0d47a1;
+    }
+    .chat-bubble:hover {
+        background-color: #1565c0;
+    }
+
+    .chat-notification {
+        background-color: #c62828;
+        border-color: #1e1e1e;
+    }
+
+    .pairing-animation {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    .pairing-animation .searching-text {
+        color: #f5f5f5;
+    }
+    .pairing-animation .pulse-circle {
+        background-color: rgba(100, 181, 246, 0.6);
+    }
+
+    .tooltip {
+        background-color: rgba(240, 240, 240, 0.85);
+        color: #111;
+    }
+}
+
+/* 修正：添加中等螢幕尺寸（601px-1199px）的樣式規則 */
+@media (min-width: 601px) and (max-width: 1199px) {
+    .text-chat {
+        width: 320px;
+        min-height: 280px;
+        max-height: 70vh;
+    }
+    
+    .text-chat.expanded {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .chat-bubble {
+        bottom: 15px;
+        right: 15px;
+    }
+} 
